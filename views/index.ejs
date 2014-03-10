@@ -1,0 +1,43 @@
+<% include HeadLayout %>
+	<div class="container" role="main">
+		<div>
+			<h3>Questions: </h3>
+			<p>
+			<form action="/create" method="post" accept=charset="utf-8">
+				<span>Ask a question:</span>
+				<input type="text" name="content" />
+			</form>
+			<p>
+			<hr />
+		</div>
+
+		<% posts.forEach( function( post ){ %> 
+			<span>
+				<div class="media">
+					<div class="pull-left text-center">
+						<a href="#"> 
+							<img data-src="holder.js/100%x180" alt="...">
+						</a>						
+						<p>
+						<a href="#"> vote up </a>
+						<h3>0</h3>
+						<a href="#"> vote down </a>
+					</div>					
+					<div class="media-body">
+						<p class="media-heading">Media heading</p>
+						<a href="/edit/<%= post._id %>" title="Update this item">
+						<%=	post.content %> 
+						<p  class="navbar-right">
+						<span> 
+							<a href="/destroy/<%= post._id %>"	title="Delete this post item"">Delete</a>
+						</span>
+						</p>
+					</div>
+				</div>
+			</span> 
+			<hr />
+		<p>
+		<% }); %>
+	</div>
+
+<% include FootLayout %>

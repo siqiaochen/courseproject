@@ -1,0 +1,54 @@
+var mongoose = require( 'mongoose' );
+var GitHubUser	= mongoose.model( 'GitHubUser' );
+ 
+var everyauth = require('everyauth');
+var conf = require('./conf');
+var usersById = {};
+var nextUserId = 0;
+everyauth.everymodule.findUserById( function (userId, callback) {
+	  
+		var user = usersById[userId];
+
+		callback(null, user);
+	   // User.findById(userId, callback);
+	  // callback has the signature, function (err, user) {...}
+	});
+everyauth.twitter
+    .consumerKey(conf.twit.consumerKey)
+    .consumerSecret(conf.twit.consumerSecret)
+    .findOrCreateUser( function (sess, accessToken, accessSecret, twitUser) {
+      return  addUser('twitter', twitUser);
+    })
+    .redirectPath('/');
+
+everyauth.facebook
+  .appId(conf.fb.appId)
+  .appSecret(conf.fb.appSecret)
+  .findOrCreateUser( function (session, accessToken, accessTokExtra, fbUserMetadata) {
+      return  addUser('facebook', fbUserMetadata);
+  })
+  .redirectPath('/');
+
+
+everyauth.github
+.appId('49146d3fb4dc12f779bf')
+.appSecret('da682f2ac88fb11781508f186369c62e76e2be7a')
+.findOrCreateUser( function (sess, accessToken, accessTokenExtra, ghUser) {
+   return addUser('github', ghUser);
+})
+.redirectPath('/');
+
+function addUser (source, sourceUser) {
+  var user;
+  if (arguments.length === 1) { // password-based
+    user = sourceUser = source;
+    user.id = ++nextUserId;
+    return usersById[nextUserId] = user;
+  } else { // non-password-based
+    user = usersById[++nextUserId] = {id: nextUserId};
+    user[source] = sourceUser;
+  }
+  return user;
+}
+
+everyauth.debug = true;

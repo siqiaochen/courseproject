@@ -15,23 +15,28 @@
 			<span>
 				<div class="media">
 					<div class="pull-left text-center">
+						<p>
+						<a href="#"> vote up </a>
+						<p>
+						<h4>0</h4>
+						<p>
+						<a href="#"> vote down </a>
+					</div>					
+					<div class="media-body auto">
+						<p class="media-heading">
+						
 						<a href="#"> 
 							<img data-src="holder.js/100%x180" alt="...">
 						</a>						
-						<p>
-						<a href="#"> vote up </a>
-						<h3>0</h3>
-						<a href="#"> vote down </a>
-					</div>					
-					<div class="media-body">
-						<p class="media-heading">Media heading</p>
+						:	Media heading</p>
 						<a href="/edit/<%= post._id %>" title="Update this item">
 						<%=	post.content %> 
-						<p  class="navbar-right">
-						<span> 
+						</a>
+						<p>
+						<div  class="navbar-right post-editor">
 							<a href="/destroy/<%= post._id %>"	title="Delete this post item"">Delete</a>
 						</span>
-						</p>
+						</div>
 					</div>
 				</div>
 			</span> 

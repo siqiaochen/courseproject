@@ -12,3 +12,13 @@ body {
 .theme-showcase > p > .btn {
   margin: 5px 0;
 }
+
+.post-editor  {
+  display: table-cell;
+  vertical-align: bottom;
+  float: none;
+}
+
+.auto {
+  overflow: auto;
+}

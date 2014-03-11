@@ -27,8 +27,10 @@
 						
 						<a href="#"> 
 							<img data-src="holder.js/100%x180" alt="...">
-						</a>						
-						:	Media heading</p>
+						</a>	
+						<% if(post.created_by) { %>					
+						<%= post.created_by.username  %> <% } %> wrote : Media heading</p>
+						
 						<a href="/edit/<%= post._id %>" title="Update this item">
 						<%=	post.content %> 
 						</a>

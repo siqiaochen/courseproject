@@ -1,10 +1,23 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Post = new Schema({
-	user_id : String,
-	reply_to : String,
+	created_by : {type: mongoose.Schema.Types.ObjectId, ref: 'Account'},
+	reply_to :  {type: mongoose.Schema.Types.ObjectId, ref: 'Account'},
 	content : String,
-	updated_at : Date
+	updated_at : Date,
+	thread_id : String
+});
+
+var Thread = new Schema({
+	owner_id : {type: mongoose.Schema.Types.ObjectId, ref: 'Account'},
+	title : String,
+	content : String,
+	updated_at : Date,
+	tag_id: { type: [String], index: true } // field level
+});
+
+var Tag = new Schema({
+	name : String
 });
 var Todo = new Schema({
 	user_id : String,

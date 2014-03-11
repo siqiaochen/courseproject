@@ -11,13 +11,16 @@ exports.login = function(req, res) {
 	} else {
 		res.render('login', {
 			user : req.user,
-			title : 'Express Todo'
+			title : 'Questions'
 		});
 	}
 };
 
 exports.register = function(req, res) {
-	res.render('register', {});
+	res.render('register', {
+		user : req.user,
+		title: "Questions"
+		});
 };
 
 exports.register_post = function(req, res) {

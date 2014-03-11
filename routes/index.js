@@ -7,7 +7,7 @@ var Post 	 = mongoose.model('Post');
  */
 
 exports.index = function(req, res){
-	Post.find(function(err, posts, count) {
+	Post.find().populate('created_by').exec(function(err, posts, count) {
 		res.render('index', {
 			user : req.user,
 			title: "Questions",
@@ -17,11 +17,19 @@ exports.index = function(req, res){
 };
 
 exports.create = function(req, res){
+	if(req.user)
+	{
 		new Post({
 			content : req.body.content,
+			created_by : req.user._id,
 			updated_at : Date.now()}).save(function(err, todo, count){
 			res.redirect('/');						
 		});
+	}
+	else
+	{
+		res.redirect('/');	
+	}
 };
 
 exports.destroy = function(req, res){

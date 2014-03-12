@@ -5,36 +5,32 @@ var Post = new Schema({
 	reply_to :  {type: mongoose.Schema.Types.ObjectId, ref: 'Account'},
 	content : String,
 	updated_at : Date,
+	votes :  { type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Vote'}], index: {unique: true, dropDups: true} },
 	thread_id : String
 });
 
 var Thread = new Schema({
-	owner_id : {type: mongoose.Schema.Types.ObjectId, ref: 'Account'},
+	created_by : {type: mongoose.Schema.Types.ObjectId, ref: 'Account'},
 	title : String,
 	content : String,
 	updated_at : Date,
-	tag_id: { type: [String], index: true } // field level
+	tags : { type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}], index: true } // field level
 });
 
 var Tag = new Schema({
-	name : String
+	name : String,
+	comment : String,
+	managed : Boolean,
+	manager_id : {type: mongoose.Schema.Types.ObjectId, ref: 'Account'}
 });
-var Todo = new Schema({
-	user_id : String,
-	content : String,
+
+var Vote = new Schema({
+	voted_by :  {type: mongoose.Schema.Types.ObjectId, ref: 'Account'},
+	postive : Boolean,
 	updated_at : Date
 });
-var User = new Schema({
-	user_id : String,
-	password : String,
-	user_right : String	
-});
-var GitHubUser = new Schema({
-	user_id : String,
-	password : String,
-	user_right : String	
-});
+
 mongoose.model('Post', Post);
-mongoose.model('Todo', Todo);
-mongoose.model('User', User);
-mongoose.model('GitHubUser', GitHubUser);
+mongoose.model('Vote', Vote);
+mongoose.model('Thread', Thread);
+mongoose.model('Tag', Tag);

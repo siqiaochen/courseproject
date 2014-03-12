@@ -23,12 +23,12 @@ exports.create = function(req, res){
 			content : req.body.content,
 			created_by : req.user._id,
 			updated_at : Date.now()}).save(function(err, todo, count){
-			res.redirect('/');						
+			res.redirect('/');
 		});
 	}
 	else
 	{
-		res.redirect('/');	
+		res.redirect('/');
 	}
 };
 

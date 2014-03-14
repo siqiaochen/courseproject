@@ -6,7 +6,7 @@ var Post = new Schema({
 	content : String,
 	updated_at : Date,
 	votes :  { type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Vote'}], index: {unique: true, dropDups: true} },
-	thread_id : String
+	thread_id : {type: mongoose.Schema.Types.ObjectId, ref: 'Thread'}
 });
 
 var Thread = new Schema({

@@ -1,6 +1,5 @@
 //var utils    = require( './utils' );
 var mongoose = require( 'mongoose' );
-var Todo     = mongoose.model( 'Todo' );
 var Post 	 = mongoose.model('Post');
 /*
  * GET home page.

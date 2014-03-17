@@ -1,0 +1,88 @@
+<% include HeadLayout %>
+	<div class="container" role="main">
+		<div class="row">
+			<div class="col-sm-9">		
+			<div class="panel panel-default">
+			<div class="panel-heading"><h3>Question:  <%= thread.title %></h3></div>
+			<div class="panel-body">		
+				<div class="media">
+					<div class="pull-left text-center">
+						<p>
+							<a href="#"> vote up </a>
+						<p>
+						<h4>0</h4>
+						<p>
+							<a href="#"> vote down </a>
+					</div>
+					<div class="media-body auto">
+						<p class="media-heading">
+	
+							<img data-src="holder.js/100%x180" alt="..."> 
+							<b> <% if(thread.created_by) { %> <%= thread.created_by.username %> <% } %>  
+								Asked : <%=	thread.title %></a>
+							</b>
+						</p>
+						<p>
+							<% if(thread.question !== undefined && thread.question!=null) { %>
+							<%= thread.question.content %>
+							<% } else {%>
+							Error : NULL Question
+							<% } %>
+						</p>
+						<div class="navbar-right post-editor">
+							<a href="/question/delete/<%= thread._id %>"
+								title="Delete this post item"">Delete</a>
+						</div>
+	
+					</div>
+				</div>
+			<hr />
+			<h4>Answers: </h4>
+						
+			<% posts.forEach( function( post ){ if(String(post._id) !== String(thread.question._id)) { %>
+				<div class="media">
+					<div class="pull-left text-center">
+						<p>
+						<a href="#"> vote up </a>
+						<p>
+						<h4>0</h4>
+						<p>
+						<a href="#"> vote down </a>
+					</div>
+					<div class="media-body auto">
+						<p class="media-heading">
+	
+							<img data-src="holder.js/100%x180" alt="..."> 
+							<b> <% if(post.created_by) { %> <%= post.created_by.username %> <% } %>  
+								replied: </a>
+							</b>
+						</p>
+						<p>
+							<% if(post !== undefined && post!=null) { %>
+							<%= post.content %>
+							<% } else {%>
+							... ...
+							<% } %>
+						</p>
+						<div class="navbar-right post-editor">
+							<a href="/answer/delete/<%= post._id %>"
+								title="Delete this post item"">Delete</a>
+						</div>
+	
+					</div>
+				</div>
+				<hr />
+				<% }}); %>
+				
+			</div>
+			</div>
+			</div>
+			<div class="col-sm-3">
+			<div>
+				
+			</div>
+			</div>
+		</div>
+	</div>
+
+<% include FootLayout %>

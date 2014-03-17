@@ -1,16 +1,16 @@
 //var utils    = require( './utils' );
 var mongoose = require( 'mongoose' );
-var Post 	 = mongoose.model('Post');
+var Thread 	 = mongoose.model('Thread');
 /*
  * GET home page.
  */
 
 exports.index = function(req, res){
-	Post.find().populate('created_by').exec(function(err, posts, count) {
+	Thread.find().populate('created_by').exec(function(err, thread, count) {
 		res.render('index', {
 			user : req.user,
 			title: "Questions",
-			posts : posts
+			thread : thread
 		});
 	});
 };

@@ -2,13 +2,13 @@
 /**
  * Module dependencies.
  */
-require( './db' );
+require( './models/qaforum' );
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
+  , question = require('./routes/question')
   , http = require('http')
-  , path = require('path')
-  , mongoskin = require('mongoskin');
+  , path = require('path');
 var app = express();
 var engine = require('ejs-locals');
 var passport = require('passport')
@@ -52,7 +52,7 @@ passport.deserializeUser(Account.deserializeUser());
 
 
 //mongoose
-mongoose.connect('mongodb://localhost/expresss-todo');
+mongoose.connect('mongodb://localhost/qa_site');
 
 app.get('/', routes.index);
 app.get('/login', user.login);
@@ -64,6 +64,14 @@ app.post('/create', routes.create);
 app.get('/destroy/:id', routes.destroy);
 app.get( '/edit/:id', routes.edit );
 app.post('/update/:id', routes.update);
+
+app.get('/questions', question.showquestionlist);
+app.get('/question/create', question.createquestion);
+app.post('/question/create', question.createquestion_post);
+app.get('/question/:id', question.question);
+app.get('/question/delete/:id', question.deletequestion);
+
+
 app.all('*',function(req,res){res.send(404);});
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

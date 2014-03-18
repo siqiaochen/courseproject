@@ -97,11 +97,13 @@ exports.question = function(req, res){
 exports.answer_post = function(req, res){
 	if(req.user)
 	{
+		console.log(req.body.content);
 		new Post({
 			content : req.body.content,
 			created_by : req.user._id,
+			thread_id : req.params.id,
 			updated_at : Date.now()}).save(function(err, todo, count){
-			res.redirect('/');
+			res.redirect('question/'+ req.params.id);
 		});
 	}
 	else

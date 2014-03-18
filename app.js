@@ -69,6 +69,7 @@ app.get('/questions', question.showquestionlist);
 app.get('/question/create', question.createquestion);
 app.post('/question/create', question.createquestion_post);
 app.get('/question/:id', question.question);
+app.post('/question/answer/:id', question.answer_post);
 app.get('/question/delete/:id', question.deletequestion);
 
 

@@ -52,7 +52,7 @@ passport.deserializeUser(Account.deserializeUser());
 
 
 //mongoose
-mongoose.connect('mongodb://localhost/qa_site');
+mongoose.connect('mongodb://dbmgr:csq1234%^&*@oceanic.mongohq.com:10003/app23120409');
 
 app.get('/', routes.index);
 app.get('/login', user.login);

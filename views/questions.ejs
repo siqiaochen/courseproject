@@ -13,13 +13,13 @@
 				<hr />
 
 
-			<% threads.forEach( function( thread ){ console.log(thread) %>
+			<% threads.forEach( function( thread ){ var votes = thread.question.vote_up.length - thread.question.vote_down.length; %>
 			<div class="media">
 				<div class="pull-left text-center">
 					<p>
 						<a href="#"> vote up </a>
 					<p>
-					<h4>0</h4>
+					<h4><%= votes %></h4>
 					<p>
 						<a href="#"> vote down </a>
 				</div>

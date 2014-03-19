@@ -5,7 +5,10 @@ var Post = new Schema({
 	content : String,
 	updated_at : Date,
 	is_question : Boolean,
-	thread_id : {type: mongoose.Schema.Types.ObjectId, ref: 'Thread'}
+	thread_id : {type: mongoose.Schema.Types.ObjectId, ref: 'Thread'},
+	vote_up :  { type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Account'}] },
+	vote_down :  { type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Account'}] }
+
 });
 
 var Comment = new Schema({
@@ -13,7 +16,7 @@ var Comment = new Schema({
 	reply_to :  {type: mongoose.Schema.Types.ObjectId, ref: 'Account'},
 	content : String,
 	updated_at : Date,
-	votes :  { type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Vote'}], index: {unique: true, dropDups: true} },
+	votes :  { type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Vote'}] },
 	thread_id : {type: mongoose.Schema.Types.ObjectId, ref: 'Thread'}
 });
 

@@ -8,11 +8,11 @@
 					<div class="media">
 						<div class="pull-left text-center">
 							<p>
-								<a href="#"> vote up </a>
+								<a href="/vote_up/<%= thread.question._id %>"> vote up </a>
 							<p>
-							<h4>0</h4>
+							<h4><%= thread.question.vote_up.length - thread.question.vote_down.length %></h4>
 							<p>
-								<a href="#"> vote down </a>
+								<a href="/vote_down/<%= thread.question._id %>"> vote down </a>
 						</div>
 						<div class="media-body auto">
 							<p class="media-heading">
@@ -39,15 +39,15 @@
 				<hr />
 				<h4>Answers: </h4>
 							
-				<% posts.forEach( function( post ){ if(String(post._id) !== String(thread.question._id)) { %>
+				<% posts.forEach( function( post ){ if(String(post._id) !== String(thread.question._id)) { var votes = post.vote_up.length - post.vote_down.length;  %>
 					<div class="media">
 						<div class="pull-left text-center">
 							<p>
-							<a href="#"> vote up </a>
+							<a href="/vote_up/<%= post._id %>"> vote up </a>
 							<p>
-							<h4>0</h4>
+							<h4><%= votes %></h4>
 							<p>
-							<a href="#"> vote down </a>
+							<a href="/vote_down/<%= post._id %>"> vote down </a>
 						</div>
 						<div class="media-body auto">
 							<p class="media-heading">

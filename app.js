@@ -7,6 +7,7 @@ var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , question = require('./routes/question')
+  , vote = require('./routes/vote')
   , http = require('http')
   , path = require('path');
 var app = express();
@@ -72,6 +73,9 @@ app.get('/question/:id', question.question);
 app.post('/question/answer/:id', question.answer_post);
 app.get('/question/delete/:id', question.deletequestion);
 app.get('/answer/delete/:id', question.answer_delete);
+app.get('/vote_up/:id', vote.vote_up);
+app.get('/vote_down/:id', vote.vote_down);
+
 
 
 app.all('*',function(req,res){res.send(404);});

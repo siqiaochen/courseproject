@@ -71,6 +71,7 @@ app.post('/question/create', question.createquestion_post);
 app.get('/question/:id', question.question);
 app.post('/question/answer/:id', question.answer_post);
 app.get('/question/delete/:id', question.deletequestion);
+app.get('/answer/delete/:id', question.answer_delete);
 
 
 app.all('*',function(req,res){res.send(404);});

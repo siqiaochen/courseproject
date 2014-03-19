@@ -14,7 +14,7 @@ var Tag 	 = mongoose.model('Tag');
 exports.showquestionlist = function(req, res){
 	var q_index = req.param.q_index;
 	var q_size = req.param.q_size;
-	if(typeof(q_index) != typeof(0)   )
+	if(typeof(q_index) != typeof(0))
 	{
 		q_index = 0;
 	}
@@ -97,13 +97,27 @@ exports.question = function(req, res){
 exports.answer_post = function(req, res){
 	if(req.user)
 	{
-		console.log(req.body.content);
 		new Post({
 			content : req.body.content,
 			created_by : req.user._id,
 			thread_id : req.params.id,
 			updated_at : Date.now()}).save(function(err, todo, count){
 			res.redirect('question/'+ req.params.id);
+		});
+	}
+	else
+	{
+		res.redirect('/');
+	}
+};
+exports.answer_delete = function(req, res){
+	if(req.user)
+	{
+		Post.findById(req.params.id, function ( err, post ){
+			post.remove(function (err, post)
+			{
+				res.redirect('question/'+post.thread_id);
+			});
 		});
 	}
 	else

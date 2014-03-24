@@ -17,11 +17,10 @@
 			<div class="media">
 				<div class="pull-left text-center">
 					<p>
-						<a href="#"> vote up </a>
+						<span> votes </span>
 					<p>
 					<h4><%= votes %></h4>
 					<p>
-						<a href="#"> vote down </a>
 				</div>
 				<div class="media-body auto">
 					<p class="media-heading">
@@ -48,6 +47,7 @@
 
 			<hr />
 			<% }); %>
+
 			</div>
 				<form method="get" action="/question/create">			
 					<button type="submit" class="btn btn-primary">Ask a question</button>
@@ -57,7 +57,18 @@
 				
 			</div>
 			</div>
-		<div>
+		</div>
+		<ul class="pagination">
+		  <li><a href="/questions/?index=<%= (current_page-page_size)>=0? (current_page-page_size) : (0) %>">&laquo;</a></li>
+		  <% for(var i=0;i<total;i+=page_size ) { %>
+		  	<li <% if(i>=current_page && i < (current_page+page_size)) { %> class="active" <% } %>>
+		  		<a href="/questions/?index=<%= i %>"><%= i/page_size + 1 %>
+		  		</a>
+		  	</li>
+		  <% } %>
+		  <li><a href="/questions/?index=<%= (current_page+page_size)<total? (current_page+page_size) : (total-1) %>">&raquo;</a></li>
+		</ul>
 	</div>
+			
 
 <% include FootLayout %>

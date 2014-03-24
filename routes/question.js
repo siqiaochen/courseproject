@@ -12,21 +12,33 @@ var Tag 	 = mongoose.model('Tag');
  */
 
 exports.showquestionlist = function(req, res){
-	var q_index = req.param.q_index;
-	var q_size = req.param.q_size;
-	if(typeof(q_index) != typeof(0))
+	var q_index = parseInt(req.query.index);
+	var q_size = parseInt(req.query.size);
+	console.log(q_index);
+	console.log(q_size);
+	if(isNaN(q_index))
 	{
 		q_index = 0;
 	}
-	if(typeof(q_size) != typeof(0) || q_size > 100)
+	if(isNaN(q_size) || q_size > 10|| q_size < 1)
 	{		
-		q_size = 100;
+		q_size = 10;
 	}
-	Thread.find({},null, {skip:q_index,limit:q_size}).populate('created_by').populate("question").exec(function(err, threads, count) {
-		res.render('questions', {
-			user : req.user,
-			title: "Questions",
-			threads : threads
+
+	Thread.count({}, function (err, thread_count) {
+		Thread.find({},null, {skip:q_index,limit:q_size}).populate('created_by').populate("question").exec(function(err, threads, count) {
+
+			console.log(thread_count);
+			console.log(q_index);
+			console.log(q_size);
+			res.render('questions', {
+				user : req.user,
+				title: "Questions",
+				threads : threads,
+				current_page : q_index,
+				page_size : q_size,
+				total : thread_count
+			});
 		});
 	});
 };

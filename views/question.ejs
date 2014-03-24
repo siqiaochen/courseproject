@@ -2,9 +2,8 @@
 	<div class="container" role="main">
 		<div class="row">
 			<div class="col-sm-9">		
-				<div class="panel panel-default">
-				<div class="panel-heading"><h4>Question:  <%= thread.title %></h4></div>
-				<div class="panel-body">		
+				<div>
+				<div class="page-header"><h4>Question:  <%= thread.title %></h4></div>		
 					<div class="media">
 						<div class="pull-left text-center">
 							<p>
@@ -24,14 +23,16 @@
 							</p>
 							<div>
 								<% if(thread.question !== undefined && thread.question!=null) { %>
-								<%= thread.question.content %>
+								<%- thread.question.content %>
 								<% } else {%>
 								Error : NULL Question
 								<% } %>
 							</div>
 							<div class="navbar-right post-editor">
+								<%  if(user && String(thread.created_by._id) === String(user._id)) { %>
 								<a href="/question/delete/<%= thread._id %>"
 									title="Delete this post item"">Delete</a>
+								<% } %>
 							</div>
 		
 						</div>
@@ -59,14 +60,16 @@
 							</p>
 							<div>
 								<% if(post !== undefined && post!=null) { %>
-								<%= post.content %>
+								<%- post.content %>
 								<% } else {%>
 								... ...
 								<% } %>
 							</div>
 							<div class="navbar-right post-editor">
+								<% if(user && String(post.created_by._id) === String(user._id)) { %>
 								<a href="/answer/delete/<%= post._id %>"
 									title="Delete this post item"">Delete</a>
+								<% } %>
 							</div>
 		
 						</div>
@@ -75,15 +78,25 @@
 					<% }}); %>
 					
 				</div>
-				</div>
 				<div class="panel panel-default">
-					<div class="panel-heading"><h4>Ask your answer:</h4></div>
+					<div class="panel-heading"><h4>Provide your answer:</h4></div>
 					<div class="panel-body">
 						<form role="form" action="/question/answer/<%= thread._id %>" method="post"
 							accept-charset="utf-8">
 			
 							<div class="form-group">
-								<textarea rows="12" class="form-control" name="content" id="inputContent"></textarea>
+								<textarea id="inputContent" name="content" rows="12" class="form-control" placeholder="Enter text ..."></textarea>
+								<script type="text/javascript">
+									$('#inputContent').wysihtml5({
+										"font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+										"emphasis": true, //Italics, bold, etc. Default true
+										"lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+										"html": false, //Button which allows you to edit the generated HTML. Default false
+										"link": true, //Button to insert a link. Default true
+										"image": true, //Button to insert an image. Default true,
+										"color": true //Button to change color of font  
+									});
+								</script>
 							</div>
 							<button type="submit" class="btn btn-default">Submit Answer</button>
 						</form>

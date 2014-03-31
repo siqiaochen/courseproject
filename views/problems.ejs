@@ -1,0 +1,30 @@
+<% include HeadLayout %>
+	<div class="container" role="main">
+		<div class="row">
+			<div class="col-sm-9">
+			
+			<H3>Problems:</H3>
+			<hr />
+
+
+			<% problems.forEach( function( problem ){ %>
+			<span><a href="/problem/<%= problem._id %>"><%= problem.title %></span>
+
+			<hr />
+			<% }); %>
+
+			</div>
+				<form method="get" action="/problem/create">			
+					<button type="submit" class="btn btn-primary">Create a problem</button>
+				</form>
+			<div class="col-sm-3">
+			<div>
+				
+			</div>
+			</div>
+		</div>
+
+	</div>
+			
+
+<% include FootLayout %>

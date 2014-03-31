@@ -1,0 +1,46 @@
+<% include HeadLayout %>
+	<div class="container" role="main">
+		<div class="row">
+			<div class="col-sm-9">		
+				<div>
+				<div class="page-header"><h4>Question:  <%= problem.title %></h4></div>		
+					<div>
+							<%- problem.content %>
+					</div>
+				<hr />
+				<h4>Put your solution here: </h4>
+							
+
+					
+				</div>
+				<div class="panel panel-default">
+
+					<form>
+					<textarea id="myTextArea"></textarea>						
+					</form>
+
+
+				</div>
+				<div>					
+					<button id="submitcode" class="btn btn-primary">Submit</button>
+				</div>
+				<div id="result">
+				</div>
+			</div>
+			<div class="col-sm-3">
+
+			</div>
+		</div>
+	</div>
+<script src="/lib/codemirror.js"></script>
+<link rel="stylesheet" href="/lib/codemirror.css">
+<script src="/mode/clike/clike.js"></script>
+<script>
+
+var cEditor = CodeMirror.fromTextArea(document.getElementById("myTextArea"), {
+  lineNumbers: true,
+  matchBrackets: true,
+  mode: "text/x-csrc"
+});
+</script>
+<% include FootLayout %>

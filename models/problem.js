@@ -4,12 +4,10 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-
 var Problem = new Schema({
-	problem_num : Number,
 	created_by : {type: mongoose.Schema.Types.ObjectId, ref: 'Account'},
 	title : String,
-	question : String,
+	content : String,
 	time_limit : Number,
 	mem_limit : Number,
 	inputs : [String],

@@ -90,16 +90,16 @@ app.get('/problem/:id',problem.readproblem);
 /*
  * Load the S3 information from the environment variables.
  */
-var AWS_ACCESS_KEY = "AKIAISE4B4YSHXHOQUWQ";
-var AWS_SECRET_KEY = "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";
-var S3_BUCKET = "oj-files";
+//var AWS_ACCESS_KEY = 
+//var AWS_SECRET_KEY =
+//var S3_BUCKET =
 
 // app upload
 /*
  * Respond to GET requests to /sign_s3.
  * Upon request, return JSON containing the temporarily-signed S3 request and the
  * anticipated URL of the image.
- */
+
 app.get('/sign_s3', function(req, res){
 	console.log("new upload");
     var object_name = req.query.s3_object_name;
@@ -124,7 +124,7 @@ app.get('/sign_s3', function(req, res){
     res.write(JSON.stringify(credentials));
     res.end();
 });
-
+ */
 
 
 app.all('*',function(req,res){res.send(404);});

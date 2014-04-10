@@ -5,10 +5,15 @@ var net = require('net');
 var net = require('net');
 function oj_client(client_ip,client_port,solution)
 {
+
 	var cmdstate = new String();
 	var datastr = new String();
 	var result = new String();
 	var finished = false;
+	this.status = function()
+	{
+		return cmdstate;
+	};
 	this.client = net.connect({port: client_port ,host:client_ip},
 		function() { //'connect' listener
 		console.log('client connected');

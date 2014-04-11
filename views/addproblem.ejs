@@ -32,6 +32,17 @@
 				<div> 
 				<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" type="Button" id="addTestCase">Add New Test Case</button>
 				</div>
+				<div>
+				<hr />
+				<H4>Test Cases:</H4>
+				<table id="testcasetable" class="table table-striped">	
+				<tr>
+				<td>Input</td>
+				<td>Output</td>
+				<td>Action</td>
+				</tr>		
+				</table>
+				</div>
 				<button type="submit" class="btn btn-default">Submit Problem</button>
 			</form>
 
@@ -67,23 +78,50 @@
 </div>
 <script>
 var i = 0;
+var inputs = [];
+var outputs = [];
 
+function uint8ToString(buf) {
+    var i, length, out = '';
+    for (i = 0, length = buf.length; i < length; i += 1) {
+        out += String.fromCharCode(buf[i]);
+    }
+    return out;
+}
+var handleFileSelect = function(input,array) {
+	var files = input.files;
+	var file = files[0];
+    if (files && file) {
+        var reader = new FileReader();
+
+        reader.onload = function(readerEvt) {
+            var binaryString = readerEvt.target.result;
+            array.push(btoa(binaryString));
+            console.log(array);
+        };
+
+        reader.readAsBinaryString(file);
+    }
+};
+function readFile(input,output) {
+    if ( input && input[0] ) {
+        if ( output && output[0] ) {
+			
+        	handleFileSelect(input[0],inputs);
+        	handleFileSelect(output[0],outputs);
+
+        	return true;
+    	}
+    }
+    return false;
+}
 $( "#addinput" ).click(function() {
-	i = i+1;
-	Query('<tr/>', {
-	    id: 'row'+i
-	}).appendTo('#inputtable');
+	if(readFile($('#Input0'),$('#Output0')))
+	{
+		i = i+1;
+		$('#testcasetable tr:last').after('<tr><td>'+$('#Input0').val()+'</td><td>'+$('#Output0').val()+'</td><td><button type="button" id="del_row'+i+'">Remove</button></td></tr>');
 
-	Query('<input/>', {
-	    id: 'Input'+i,
-	    type: "text"
-	}).appendTo('#row'+i);
-
-	Query('<input/>', {
-	    id: 'Output'+i,
-	    type: "text"
-	}).appendTo('#row'+i);
-	
+	}
 	
 });
 </script>

@@ -1,0 +1,11 @@
+<html>
+<body>
+<div class="container" role="main">
+	<% var i = 0; %>
+	<% solutions.forEach( function( solution ){  %>
+		<span id="solution<%= i %>"><%- JSON.stringify(solution) %></span>
+	  	</p>
+	<% i++; }); %>
+</div>
+</body>
+</html>

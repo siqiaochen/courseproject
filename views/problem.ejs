@@ -24,7 +24,11 @@
 				<div>					
 					<button id="submitcode" class="btn btn-primary">Submit</button>
 				</div>
-				<div id="result">
+				<p>
+				
+				<div class="jumbotron">
+					<h4>Result </h4>
+					<span id="result_span"></span>
 				</div>
 			</div>
 			<div class="col-sm-3">
@@ -42,5 +46,81 @@ var cEditor = CodeMirror.fromTextArea(document.getElementById("myTextArea"), {
   matchBrackets: true,
   mode: "text/x-csrc"
 });
+
+var processfinished = false;
+var processid = 0;
+$("#submitcode").click(function (event) {
+
+	$('#submitcode').attr("disabled", true);	
+	event.preventDefault();
+	var myCodeMirror = cEditor.getValue();
+    var toSend = {
+    		solution : myCodeMirror
+	};
+	console.log(toSend);
+    $.post( "/solution/send/<%= problem._id %>", toSend, function(data){
+        //callback
+    	//window.location.href = "/problems";
+        console.log(data);
+		processid = parseInt(data.id);
+		console.log('process id:' + processid);
+        window.setInterval(refreshSolution, 1000);
+    }).fail(function() {
+      $('#result_span').text("Error posting message!" );
+    });
+
+});
+function refreshSolution() { 
+	if(processfinished != false)
+		return;
+	$.get( "/solutions", function( data ) {
+		console.log("update");
+		//var value =jQuery.parseJSON(data);
+		console.log(data);
+		console.log(data[processid]);
+		var rev_solution = data[processid];
+		console.log(rev_solution.status);
+		if(rev_solution.status ==="solution")
+		{
+			processfinished = true;
+			var ans = rev_solution.answer.split(/\r?\n/)[0].split(" ");
+			
+			var ans_str = "";
+			if(ans[0] === "4")
+				ans_str = ans_str + "\nResult: Pass!";
+			else if(ans[0] === "5")
+				ans_str = ans_str + "\nResult: PE!";
+			else if(ans[0] === "6")
+				ans_str = ans_str + "\nResult: Error: WA: Wrong Answer!";
+			else if(ans[0] === "7")
+				ans_str = ans_str + "\nResult: Error: TL: Exceeding Time Limit!";
+			else if(ans[0] === "8")
+				ans_str = ans_str + "\nResult: Error: ML: Exceeding Memory Limit!";
+			else if(ans[0] === "9")
+				ans_str = ans_str + "\nResult: Error: OL: Exceeding output file size limit!";
+			else if(ans[0] === "10")
+				ans_str = ans_str + "\nResult: Error: RE: Error, Can not Access Recourse!";
+			else if(ans[0] === "11")
+				ans_str = ans_str + "\nResult: Error: CE: Compile Error!";
+			else if(ans[0] === "12")
+				ans_str = ans_str + "\nResult: Error: CO!";
+			else if(ans[0] === "13")
+				ans_str = ans_str + "\nResult: Error: TR!";
+			ans_str = ans_str + "\nMemory used: " + ans[1];
+			ans_str = ans_str + "\nTime used: " + ans[2];
+			 $('#result_span').text(ans_str);
+		}
+		else if(rev_solution.status ==="error")
+		{
+			processfinished = true;	
+			 $('#result_span').text("Error Encountered!");
+		}
+		else if(rev_solution.status ==="end")
+		{
+			processfinished = true;	
+			 $('#result_span').text("Force End!");	
+		}		
+	});
+}
 </script>
 <% include FootLayout %>

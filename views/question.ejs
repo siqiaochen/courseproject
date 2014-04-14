@@ -31,7 +31,7 @@
 							<div class="navbar-right post-editor">
 								<%  if(user && String(thread.created_by._id) === String(user._id)) { %>
 								<a href="/question/delete/<%= thread._id %>"
-									title="Delete this post item"">Delete</a>
+									title="Delete this post item">Delete</a>
 								<% } %>
 							</div>
 		
@@ -68,7 +68,7 @@
 							<div class="navbar-right post-editor">
 								<% if(user && String(post.created_by._id) === String(user._id)) { %>
 								<a href="/answer/delete/<%= post._id %>"
-									title="Delete this post item"">Delete</a>
+									title="Delete this post item">Delete</a>
 								<% } %>
 							</div>
 		

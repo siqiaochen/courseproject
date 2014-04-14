@@ -2,17 +2,22 @@
  * New node file
  */
 var net = require('net');
-var net = require('net');
 function oj_client(client_ip,client_port,solution)
 {
 
 	var cmdstate = new String();
 	var datastr = new String();
 	var result = new String();
+	var answer = new String();
 	var finished = false;
+	this.problem_id = solution.problem.id;
 	this.status = function()
 	{
 		return cmdstate;
+	};
+	this.answer = function()
+	{
+		return answer;
 	};
 	this.client = net.connect({port: client_port ,host:client_ip},
 		function() { //'connect' listener
@@ -33,33 +38,34 @@ function oj_client(client_ip,client_port,solution)
 				{
 					if(cmdstr[0] === "echo")
 					{
-						this.cmdstate = "connected";
+						cmdstate = "connected";
 						console.log('connected');	
 						var str = solveProblem(solution);
 						this.write('solve '+str+'\n');
 					}	
 					else if(cmdstr[0] === "starting")
 					{
-						this.cmdstate = "starting";						
+						cmdstate = "starting";						
 						console.log('starting');
 					}
 					else if(cmdstr[0] === "processing")
 					{
-						this.cmdstate = "processing";						
+						cmdstate = "processing";						
 						console.log('processing');
 					}
 					else if(cmdstr[0] === "solution")
 					{
-						this.cmdstate = "solution";		
+						cmdstate = "solution";		
 						var buf = new Buffer(cmdstr[1], 'base64'); 						
 						var ans = buf.toString('ascii');
+						answer = ans;
 						console.log('solution processed:' + ans);
 						this.end();
 						this.finished = true;
 					}
 					else if(cmdstr[0] === "exit")
 					{
-						this.cmdstate = "exit";	
+						cmdstate = "exit";	
 						this.end();
 						console.log('exit');
 					}
@@ -77,6 +83,7 @@ function oj_client(client_ip,client_port,solution)
 	});
 
 	this.client.on('error', function(e) {
+		cmdstate = "error";
 		console.log(e);
 	});
 

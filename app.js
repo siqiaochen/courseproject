@@ -9,6 +9,7 @@ var express = require('express')
   , user = require('./routes/user')
   , question = require('./routes/question')
   , problem = require('./routes/problem')
+  , solution = require('./routes/solution')
   , vote = require('./routes/vote')
   , http = require('http')
   , path = require('path');
@@ -84,7 +85,9 @@ app.get('/problems', problem.showproblemlist);
 app.get('/problem/create',problem.createproblem);
 app.post('/problem/create',problem.createproblem_post);
 app.get('/problem/:id',problem.readproblem);
-
+//solution page
+app.get('/solutions',solution.get_solution_info);
+app.post('/solution/send/:id',solution.send_solution);
 
 
 app.all('*',function(req,res){res.send(404);});

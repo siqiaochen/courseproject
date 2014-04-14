@@ -49,6 +49,8 @@ exports.createproblem_post = function(req, res){
 				content : req.body.content,
 				time_limit : req.body.time_limit,
 				mem_limit : req.body.mem_limit,
+				inputs : req.body.inputs,
+				outputs : req.body.outputs,
 				updated_at : Date.now()}
 		).save(function(err, problem, count){	
 			console.log(err);

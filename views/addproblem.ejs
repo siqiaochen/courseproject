@@ -3,7 +3,7 @@
 	<div class="panel panel-default">
 		<div class="panel-heading"><h3>Create a new problem:</h3></div>
 		<div class="panel-body">
-			<form role="form" action="/problem/create" method="post"
+			<form role="form" id="myform" method="post"
 				accept-charset="utf-8">
 
 				<div class="form-group">
@@ -28,6 +28,16 @@
 						});
 					</script>
 		
+				</div>
+				<div class="form-group">
+					<label for="time_limit">Time Limit:</label> <input
+						type="number" class="form-control" name="time_limit"
+						id="time_limit" value="10"/>
+				</div>
+				<div class="form-group">
+					<label for="mem_limit">Memory Limit:</label> <input
+						type="number" class="form-control" name="mem_limit"
+						id="mem_limit" value="10"/>
 				</div>
 				<div> 
 				<button class="btn btn-primary" data-toggle="modal" data-target="#myModal" type="Button" id="addTestCase">Add New Test Case</button>
@@ -123,6 +133,25 @@ $( "#addinput" ).click(function() {
 
 	}
 	
+});
+
+$("#myform").submit(function (event) {
+
+	event.preventDefault(); 
+    var toSend = {
+        title : $('#inputProblem').val(),
+        content : $('#inputContent').val(),
+    	time_limit : $('#time_limit').val(),
+    	mem_limit : $('#mem_limit').val(),
+    	inputs : inputs,
+    	outputs : outputs
+	};
+	console.log(toSend);
+    $.post( "/problem/create", toSend, function(data){
+        //callback
+    	window.location.href = "/problems";
+    } );
+
 });
 </script>
 <% include FootLayout %>

@@ -34,7 +34,7 @@ exports.send_solution = function(req, res){
 		}
 		console.log(my_solution);
 		
-		var client = new oj_client("192.168.1.18",5001,my_solution);
+		var client = new oj_client("127.0.0.1",5001,my_solution);
 		solutions.push(client);
 		var ans = {
 			id : solutions.indexOf(client)

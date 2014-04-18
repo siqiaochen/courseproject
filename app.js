@@ -58,8 +58,8 @@ passport.deserializeUser(Account.deserializeUser());
 
 
 //mongoose
-mongoose.connect('mongodb://dbmgr:csq1234%^&*@oceanic.mongohq.com:10003/app23120409');
-
+//mongoose.connect('mongodb://dbmgr:csq1234%^&*@oceanic.mongohq.com:10003/app23120409');
+mongoose.connect("mongodb://localhost:27017/exampleDb");
 app.get('/', routes.index);
 app.get('/login', user.login);
 app.post('/login', passport.authenticate('local'), function(req, res) {res.redirect('/');});

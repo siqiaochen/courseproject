@@ -42,7 +42,7 @@ exports.send_solution = function(req, res){
 		client.ans_id = currID;
 		solutions.push(client);
 		var ans = {
-			id : my_solution.id
+			id : currID
 		}
 		
 		res.send(ans);

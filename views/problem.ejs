@@ -77,13 +77,11 @@ function refreshSolution() {
 		console.log("update");
 		//var value =jQuery.parseJSON(data);
 		console.log(data);
-		console.log(data[processid]);
-
 		var rev_solution;
 		for(var i=0;i<data.length;i++)
 		{
-			if(data.ans_id === processid)
-			rev_solution = data[i];	
+			if(data[i].ans_id === processid)
+				rev_solution = data[i];	
 		}
 		if(rev_solution === undefined)
 		{

@@ -48,6 +48,11 @@ function oj_client(client_ip,client_port,solution)
 						cmdstate = "starting";						
 						console.log('starting');
 					}
+					else if(cmdstr[0] === "busy")
+					{
+						cmdstate = "busy";						
+						console.log('busy');
+					}
 					else if(cmdstr[0] === "processing")
 					{
 						cmdstate = "processing";						
@@ -80,6 +85,10 @@ function oj_client(client_ip,client_port,solution)
 	});
 	this.client.on('end', function() {
 		console.log('client disconnected');
+		if(cmdstate !== "solution" && cmdstate !== "busy")
+		{
+			cmdstate = "error";
+		}
 	});
 
 	this.client.on('error', function(e) {

@@ -52,7 +52,7 @@ $(function(){
 					<li><a href="/problems">OJ Problems</a></li>
 					<li><a href="/questions">Questions</a></li>
 					<% if(user) { %>					
-					<li><a href="#account">User: <%= user.username %></a></li>
+					<li><a href="#account">User(<%= user.role %>): <%= user.username %></a></li>
 					<% } else { %>					
 					<li><a href="/login">Login</a></li>
 					<% } %>

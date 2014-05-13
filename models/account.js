@@ -8,11 +8,7 @@ var mongoose = require('mongoose'),
 var Account = new Schema({
     nickname: String,
     birthdate: Date,
-    roles: String
-});
-var Role = new Schema({
-	created_by : {type: mongoose.Schema.Types.ObjectId, ref: 'Account'},
-    roles: String
+    role: String
 });
 
 
@@ -20,12 +16,20 @@ Account.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model('Account', Account);
 
-module.exports = mongoose.model('Role', Role);
 
 exports.requireRole = function(role) {
     return function(req, res, next) {
-        if(req.session.user && req.session.user.roles === role)
-            next();
+        if(req.session.user)
+        {
+        	Account.findById(req.params.id,function(err, account, count) {
+        		if(account.role === 'admin')
+        			next();
+        		else if(account.role === 'role')
+        			next();
+        		else
+                    res.send(403);
+        	});
+        }
         else
             res.send(403);
     }

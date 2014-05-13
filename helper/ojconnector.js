@@ -89,6 +89,16 @@ function oj_client(client_ip,client_port,solution)
 		{
 			cmdstate = "error";
 		}
+		else if(cmdstate === "busy")
+		{
+	        socket.setTimeout(1000, function() {
+	            client.connect(client_port ,client_ip, function(){
+	                console.log('RECONNECTED TO: ' + client_ip + ':' + client_port);	
+	        		this.write("echo\n");
+	            });
+	        });
+			
+		}
 	});
 
 	this.client.on('error', function(e) {

@@ -81,16 +81,22 @@ exports.createquestion_post = function(req, res){
 
 
 exports.deletequestion = function(req,res){
-	Thread.findById(req.params.id, function ( err, thread ){
-		thread.remove(function (err, thread)
-		{
-			Post.remove({thread_id : thread._id},function(err, posts){
-				if (err) return handleError(err);
+	if(req.user)
+	{
+		Thread.findById(req.params.id, function ( err, thread ){
+			thread.remove(function (err, thread)
+			{
+				Post.remove({thread_id : thread._id},function(err, posts){
+					if (err) return handleError(err);
+				});
+				res.redirect('questions');
 			});
-			res.redirect('questions');
 		});
-	});
-	
+	}
+	else
+	{
+		res.redirect('questions');
+	}
 }
 exports.question = function(req, res){
 		Thread.findById(req.params.id).populate('created_by').populate("question").exec( function ( err, thread ){

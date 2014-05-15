@@ -101,7 +101,12 @@ app.get('/problem/:id',problem.readproblem);
 //solution page
 app.get('/solutions',solution.get_solution_info);
 app.post('/solution/send/:id',solution.send_solution);
-
+app.get('/about',function(req,res) {
+	res.render('about', {
+		user : req.user,
+		title: "Questions"
+		});
+});
 
 app.all('*',function(req,res){res.send(404);});
 
@@ -110,7 +115,7 @@ app.all('*',function(req,res){res.send(404);});
 
 var workers =  1;//require('os').cpus().length;
 console.log("cpus: %d", workers);
-if (cluster.isMaster)
+if (cluster.isMaster && process.env.MODE === 'Multi')
 {
 	console.log('start cluster with %s workers', workers);
 	for (var i = 0; i < workers; ++i) {

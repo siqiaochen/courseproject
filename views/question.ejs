@@ -21,7 +21,7 @@
 									Asked : <%=	thread.title %></a>
 								</b>
 							</p>
-							<div>
+							<div class="post_content">
 								<% if(thread.question !== undefined && thread.question!=null) { %>
 								<%- thread.question.content %>
 								<% } else {%>
@@ -30,6 +30,9 @@
 							</div>
 							<div class="navbar-right post-editor">
 								<%  if(user && String(thread.created_by._id) === String(user._id)) { %>
+								
+								<a href="#" class="edit_post" title="Edit this post item">Edit</a>
+								<span> | </span>
 								<a href="/question/delete/<%= thread._id %>"
 									title="Delete this post item">Delete</a>
 								<% } %>
@@ -39,7 +42,7 @@
 					</div>
 				<hr />
 				<h4>Answers: </h4>
-							
+				<% var q_answered = false; %>			
 				<% posts.forEach( function( post ){ if(String(post._id) !== String(thread.question._id)) { var votes = post.vote_up.length - post.vote_down.length;  %>
 					<div class="media">
 						<div class="pull-left text-center">
@@ -58,7 +61,7 @@
 									replied: </a>
 								</b>
 							</p>
-							<div>
+							<div  class="post_content">
 								<% if(post !== undefined && post!=null) { %>
 								<%- post.content %>
 								<% } else {%>
@@ -67,6 +70,9 @@
 							</div>
 							<div class="navbar-right post-editor">
 								<% if(user && String(post.created_by._id) === String(user._id)) { %>
+								<%q_answered = true;%>
+								<a href="#" class="edit_post" title="Edit this post item">Edit</a>
+								<span> | </span>
 								<a href="/answer/delete/<%= post._id %>"
 									title="Delete this post item">Delete</a>
 								<% } %>
@@ -78,6 +84,30 @@
 					<% }}); %>
 					
 				</div>
+				<script type="text/javascript">
+				$(".edit_post").click(function(){
+					// $(event.target).parent().parent().find(".post_content").hide();
+					$(event.target).parent().parent().find(".post_content").replaceWith(
+						$('<textarea id="editContent" name="content" rows="12" class="form-control" placeholder="Enter text ..."></textarea>').attr(
+							{ id: 'editContent', value: $(event.target).parent().parent().find(".post_content").text() }
+						)
+					);
+					$('#editContent').wysihtml5({
+
+						"stylesheets": ["/lib/css/wysiwyg-color.css", "/lib/css/highlight/github.css"],
+						"font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+						"emphasis": true, //Italics, bold, etc. Default true
+						"lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+						"html": false, //Button which allows you to edit the generated HTML. Default false
+						"link": true, //Button to insert a link. Default true
+						"image": true, //Button to insert an image. Default true,
+						"color": true, //Button to change color of font 
+						"format-code" : true // enable syntax highlighting
+					});
+				});
+
+				</script>
+				<% if(!q_answered) { %>
 				<div class="panel panel-default">
 					<div class="panel-heading"><h4>Provide your answer:</h4></div>
 					<div class="panel-body">
@@ -106,6 +136,7 @@
 			
 					</div>
 				</div>
+				<% } %>
 			</div>
 			<div class="col-sm-3">
 			<div>

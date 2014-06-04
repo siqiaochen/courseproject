@@ -44,7 +44,7 @@
 				<h4>Answers: </h4>
 				<% var q_answered = false; %>			
 				<% posts.forEach( function( post ){ if(String(post._id) !== String(thread.question._id)) { var votes = post.vote_up.length - post.vote_down.length;  %>
-					<div class="media">
+					<div class="media" title="<%= post._id %>">
 						<div class="pull-left text-center">
 							<p>
 							<a href="/vote_up/<%= post._id %>"> vote up </a>
@@ -71,6 +71,7 @@
 							<div class="navbar-right post-editor">
 								<% if(user && String(post.created_by._id) === String(user._id)) { %>
 								<%q_answered = true;%>
+								
 								<a href="#" class="edit_post" title="Edit this post item">Edit</a>
 								<span> | </span>
 								<a href="/answer/delete/<%= post._id %>"
@@ -87,11 +88,18 @@
 				<script type="text/javascript">
 				$(".edit_post").click(function(){
 					// $(event.target).parent().parent().find(".post_content").hide();
-					$(event.target).parent().parent().find(".post_content").replaceWith(
-						$('<textarea id="editContent" name="content" rows="12" class="form-control" placeholder="Enter text ..."></textarea>').attr(
-							{ id: 'editContent', value: $(event.target).parent().parent().find(".post_content").text() }
-						)
-					);
+					var text = $(event.target).parent().parent().find(".post_content").html();
+					console.log(text);
+					var id = $(event.target).parent().parent().parent().attr("title");
+					console.log(id);
+					$(event.target).parent().parent().find(".post_content").replaceWith('<form id="edit_post_form"></form>');
+					
+					$('#edit_post_form') 
+			        .attr("action","/question/edit/"+id).attr("method","post") //set the form attributes
+			        //add in all the needed input elements
+			        .append('<textarea id="editContent" name="content" rows="12" class="form-control" placeholder="Enter text ..."></textarea>')
+					.append('<button type="submit" class="btn btn-default">Submit Answer</button>');
+					$('#editContent').attr('value', text);
 					$('#editContent').wysihtml5({
 
 						"stylesheets": ["/lib/css/wysiwyg-color.css", "/lib/css/highlight/github.css"],

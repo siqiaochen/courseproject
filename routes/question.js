@@ -143,15 +143,16 @@ exports.answer_delete = function(req, res){
 		res.redirect('/');
 	}
 };
-exports.editquestion = function(req, res){
+exports.edit_post = function(req, res){
 	if(req.user)
 	{
-		new Post({
-			content : req.body.content,
-			created_by : req.user._id,
-			updated_at : Date.now()}).save(function(err, todo, count){
-			res.redirect('/');
-		});
+		Post.findById( req.params.id, function ( err, post ){
+			post.content    = req.body.content;
+			post.updated_at = Date.now();
+			post.save( function ( err, post, count ){
+				res.redirect('question/'+post.thread_id);
+				});
+			});
 	}
 	else
 	{

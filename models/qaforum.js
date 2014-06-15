@@ -24,6 +24,8 @@ var Thread = new Schema({
 	created_by : {type: mongoose.Schema.Types.ObjectId, ref: 'Account'},
 	title : String,
 	question : {type: mongoose.Schema.Types.ObjectId, ref: 'Post'},
+	views: Number,
+	hotness: Number,
 	updated_at : Date,
 	tags : { type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}], index: true } // field level
 });

@@ -14,6 +14,7 @@ var Tag 	 = mongoose.model('Tag');
 exports.showquestionlist = function(req, res){
 	var q_index = parseInt(req.query.index);
 	var q_size = parseInt(req.query.size);
+	var q_sort = req.query.sort;
 	console.log(q_index);
 	console.log(q_size);
 	if(isNaN(q_index))
@@ -24,23 +25,70 @@ exports.showquestionlist = function(req, res){
 	{		
 		q_size = 10;
 	}
-
+	if(q_sort === undefined)
+	{
+		q_sort = "date";
+	}
 	Thread.count({}, function (err, thread_count) {
-		Thread.find({},null, {skip:q_index,limit:q_size}).populate('created_by').populate("question").exec(function(err, threads, count) {
 
-			console.log(thread_count);
-			console.log(q_index);
-			console.log(q_size);
-			res.render('questions', {
-				user : req.user,
-				title: "Questions",
-				threads : threads,
-				current_page : q_index,
-				page_size : q_size,
-				total : thread_count
+		if(q_sort === "date")
+		{			
+			Thread.find({},null, {skip:q_index,limit:q_size}).sort({updated_at:-1}).populate('created_by').populate("question").exec(function(err, threads, count) {
+	
+				console.log(thread_count);
+				console.log(q_index);
+				console.log(q_size);
+				res.render('questions', {
+					user : req.user,
+					title: "Questions",
+					threads : threads,
+					current_page : q_index,
+					page_size : q_size,
+					total : thread_count,
+					sort : "date"
+				});
 			});
-		});
+		}
+		else if(q_sort === "views")
+		{			
+			Thread.find({},null, {skip:q_index,limit:q_size}).sort({views:-1}).populate('created_by').populate("question").exec(function(err, threads, count) {
+	
+				console.log(thread_count);
+				console.log(q_index);
+				console.log(q_size);
+				res.render('questions', {
+					user : req.user,
+					title: "Questions",
+					threads : threads,
+					current_page : q_index,
+					page_size : q_size,
+					total : thread_count,
+					sort : "views"
+				});
+			});
+		}
+		else if(q_sort === "hotness")
+		{			
+			Thread.find({},null, {skip:q_index,limit:q_size}).sort({hotness:-1}).populate('created_by').populate("question").exec(function(err, threads, count) {
+	
+				console.log(thread_count);
+				console.log(q_index);
+				console.log(q_size);
+				res.render('questions', {
+					user : req.user,
+					title: "Questions",
+					threads : threads,
+					current_page : q_index,
+					page_size : q_size,
+					total : thread_count,
+					sort : "hotness"
+				});
+			});
+		}
 	});
+	
+
+	
 };
 
 exports.createquestion = function(req, res){
@@ -57,6 +105,7 @@ exports.createquestion_post = function(req, res){
 		var newthread =	new Thread({
 			title : req.body.title,
 			created_by : req.user._id,
+			views : 1, 
 			updated_at : Date.now()}).save(function(err, newthread, count){					
 				new Post({
 					content : req.body.content,
@@ -100,15 +149,21 @@ exports.deletequestion = function(req,res){
 }
 exports.question = function(req, res){
 		Thread.findById(req.params.id).populate('created_by').populate("question").exec( function ( err, thread ){
-
-			Post.find({thread_id : thread._id}).populate('created_by').exec(function(err, posts){
-				res.render('question',{
-					user : req.user,
-					title : 'Questions',
-					thread : thread,
-					posts : posts
-				});
-			});			
+			if(isNaN(thread.views))
+				thread.views = 0;
+			thread.views = thread.views + 1;
+			console.log(thread);
+			thread.save(function(err, thread, numberAffected ){
+				Post.find({thread_id : thread._id}).sort({updated_at:-1}).populate('created_by').exec(function(err, posts){
+					
+					res.render('question',{
+						user : req.user,
+						title : 'Questions',
+						thread : thread,
+						posts : posts
+					});
+				});	
+			});
 		});
 	
 };

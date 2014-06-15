@@ -11,6 +11,11 @@
 					</div>
 				</form>
 				<hr />
+				<ul class="nav nav-tabs">
+				  <li <%if(sort === 'date') { %>class="active"<% } %>><a href="/questions/?sort=date">Newest</a></li>
+				  <li <%if(sort === 'views') { %>class="active"<% } %>><a href="/questions/?sort=views">Most Viewed</a></li>
+				  <li <%if(sort === 'hotness') { %>class="active"<% } %>><a href="/questions/?sort=hotness">Hottest</a></li>
+				</ul>
 
 
 			<% threads.forEach( function( thread ){ var votes = thread.question.vote_up.length - thread.question.vote_down.length; %>
@@ -29,6 +34,7 @@
 						<b> <% if(thread.created_by) { %> <%= thread.created_by.username %> <% } %>  
 							asked : <a href="/question/<%= thread._id %>"> <%=	thread.title %></a>
 						</b>
+						<span>(<%= thread.views %> views)</span>
 					</p>
 					<p>
 						<% if(thread.question !== undefined && thread.question!=null) { %>
@@ -59,14 +65,14 @@
 			</div>
 		</div>
 		<ul class="pagination">
-		  <li><a href="/questions/?index=<%= (current_page-page_size)>=0? (current_page-page_size) : (0) %>">&laquo;</a></li>
+		  <li><a href="/questions/?index=<%= (current_page-page_size)>=0? (current_page-page_size) : (0) %>&sort=<%= sort %>">&laquo;</a></li>
 		  <% for(var i=0;i<total;i+=page_size ) { %>
 		  	<li <% if(i>=current_page && i < (current_page+page_size)) { %> class="active" <% } %>>
 		  		<a href="/questions/?index=<%= i %>"><%= i/page_size + 1 %>
 		  		</a>
 		  	</li>
 		  <% } %>
-		  <li><a href="/questions/?index=<%= (current_page+page_size)<total? (current_page+page_size) : (total-1) %>">&raquo;</a></li>
+		  <li><a href="/questions/?index=<%= (current_page+page_size)<total? (current_page+page_size) : (total-1) %>&sort=<%= sort %>">&raquo;</a></li>
 		</ul>
 	</div>
 			
